@@ -41,35 +41,40 @@ class Figure
 
         std::vector<point3d> points_arr;
 
-        double getX(double fi, double psi) const {
-            return (R + r * cos(psi)) * cos(fi);
-        }
-        
-        double getY(double fi, double psi) const {
-            return (R + r * cos(psi)) * sin(fi);
-        }
-        
-        double getZ(double psi) const {
-            return r * sin(psi);
+        point3d get_torus_point(double u, double v) const {
+            double x = (R + r * cos(v)) * cos(u);
+            double y = (R + r * cos(v)) * sin(u);
+            double z = r * sin(v);
+            return point3d(x, y, z);
         }
 
         Figure(double R = 3.0, double r = 1.0) : R(R), r(r) {}
 
+        point3d random_point_on_torus() {
+            std::uniform_real_distribution<double> uDist(0, 2 * M_PI);
+            std::uniform_real_distribution<double> vDist(0, M_PI);
+            
+            double u = uDist(getGenerator());
+            double v = vDist(getGenerator());
+            
+            return get_torus_point(u, v);
+        }
+
         point3d random_points_filling()
         {
-            double x = getX(fi, psi);
-            double y = getY(fi, psi);
-            double z = getZ(psi);
+            std::uniform_real_distribution<double> uDist(0, 2 * M_PI);
+            std::uniform_real_distribution<double> vDist(0, M_PI);
+            std::uniform_real_distribution<double> radiusDist(0, r);
             
-            std::uniform_real_distribution<double> xDist(-x, x);
-            std::uniform_real_distribution<double> yDist(-y, y);
-            std::uniform_real_distribution<double> zDist(0, z);
-
-            double x_point = xDist(getGenerator());
-            double y_point = yDist(getGenerator());
-            double z_point = zDist(getGenerator());
-
-            return point3d(x_point, y_point, z_point);
+            double u = uDist(getGenerator());
+            double v = vDist(getGenerator());
+            double random_r = radiusDist(getGenerator());
+            
+            double x = (R + random_r * cos(v)) * cos(u);
+            double y = (R + random_r * cos(v)) * sin(u);
+            double z = random_r * sin(v);
+            
+            return point3d(x, y, z);
         }
         
         void filling_K(int K)
@@ -186,7 +191,7 @@ int main()
     fig.write_data_to_file();
     fig.write_parameters_to_file(K, R, r);
 
-    // fig.run_visualization();
+    fig.run_visualization();
 
     return 0;
 }
