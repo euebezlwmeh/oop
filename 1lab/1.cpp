@@ -2,6 +2,7 @@
 #include <random>
 #include <vector>
 #include <cmath>
+#include <fstream>
 
 struct point3d
 {  
@@ -100,9 +101,22 @@ class Figure
             points_arr.push_back(point3d(x, y, z));
         }
 
-        void printPoints() const {
+        void write_data_to_file() {
+            std::ofstream out;
+            out.open("points.txt");
+            if (out.is_open())
+            {
+                for (int i = 0; i < points_arr.size(); i++)
+                {
+                    out << points_arr[i].x << "\t" << points_arr[i].y << "\t" << points_arr[i].z << "\n";
+                }
+            }
+            out.close();
+        }  
+
+        void printPoints() {
             std::cout << "Points in vector (" << points_arr.size() << " points):\n";
-            for (const auto& point : points_arr) {
+            for (auto point : points_arr) {
                 point.print();
             }
         }
@@ -142,6 +156,8 @@ int main()
     fig.new_user_point(x, y, z);
     std::cout << "\n";
     fig.printPoints();
+
+    fig.write_data_to_file();
 
     return 0;
 }
