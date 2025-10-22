@@ -77,13 +77,22 @@ class Figure
             }
         }
 
-        float rnd(int K)
+        float rnd()
         {
             point3d::getBackX;
             point3d::getBackY;
             point3d::getBackZ;
 
             points_arr.push_back(point3d(random_points_filling()));
+        }
+
+        point3d i_point_position(int i)
+        {
+            if (i < 0 || i >= points_arr.size()) {
+                std::cout << "Incorrect index\n";
+                return point3d();
+            }
+            return points_arr[i];
         }
 
         void printPoints() const {
@@ -100,6 +109,8 @@ int main()
     int K;
     double R;
     double r;
+    
+    int i;
 
     std::cout << "Enter K\n";
     std::cin >> K;
@@ -111,6 +122,11 @@ int main()
     Figure fig(R, r);
     fig.filling_K(K);
     fig.printPoints();
+
+    std::cout << "i point position. Enter index i:\n";
+    std::cin >> i;
+    point3d i_point = fig.i_point_position(i);
+    i_point.print();
 
     return 0;
 }
