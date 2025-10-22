@@ -95,6 +95,11 @@ class Figure
             return points_arr[i];
         }
 
+        void new_user_point(double x, double y, double z)
+        {
+            points_arr.push_back(point3d(x, y, z));
+        }
+
         void printPoints() const {
             std::cout << "Points in vector (" << points_arr.size() << " points):\n";
             for (const auto& point : points_arr) {
@@ -112,6 +117,10 @@ int main()
     
     int i;
 
+    double x;
+    double y;
+    double z;
+
     std::cout << "Enter K\n";
     std::cin >> K;
     std::cout << "Enter R\n";
@@ -127,6 +136,12 @@ int main()
     std::cin >> i;
     point3d i_point = fig.i_point_position(i);
     i_point.print();
+
+    std::cout << "Enter coords of new point (x, y, z):\n";
+    std::cin >> x >> y >> z;
+    fig.new_user_point(x, y, z);
+    std::cout << "\n";
+    fig.printPoints();
 
     return 0;
 }
