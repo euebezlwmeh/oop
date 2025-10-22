@@ -3,6 +3,8 @@
 #include <vector>
 #include <cmath>
 #include <fstream>
+#include <cstdlib>
+#include <sstream>
 
 struct point3d
 {  
@@ -112,7 +114,21 @@ class Figure
                 }
             }
             out.close();
-        }  
+        }
+
+        void run_visualization() {
+            std::stringstream command;
+            command << "python visualize.py";
+            
+            std::cout << "Running: " << command.str() << std::endl;
+            int result = system(command.str().c_str());
+            
+            if (result == 0) {
+                std::cout << "Visualization completed" << std::endl;
+            } else {
+                std::cout << "Visualization error" << std::endl;
+            }
+        }
 
         void printPoints() {
             std::cout << "Points in vector (" << points_arr.size() << " points):\n";
@@ -144,20 +160,22 @@ int main()
 
     Figure fig(R, r);
     fig.filling_K(K);
-    fig.printPoints();
+    // fig.printPoints();
 
-    std::cout << "i point position. Enter index i:\n";
-    std::cin >> i;
-    point3d i_point = fig.i_point_position(i);
-    i_point.print();
+    // std::cout << "i point position. Enter index i:\n";
+    // std::cin >> i;
+    // point3d i_point = fig.i_point_position(i);
+    // i_point.print();
 
-    std::cout << "Enter coords of new point (x, y, z):\n";
-    std::cin >> x >> y >> z;
-    fig.new_user_point(x, y, z);
-    std::cout << "\n";
-    fig.printPoints();
+    // std::cout << "Enter coords of new point (x, y, z):\n";
+    // std::cin >> x >> y >> z;
+    // fig.new_user_point(x, y, z);
+    // std::cout << "\n";
+    // fig.printPoints();
 
     fig.write_data_to_file();
+
+    fig.run_visualization();
 
     return 0;
 }
