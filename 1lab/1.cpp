@@ -130,6 +130,16 @@ class Figure
             }
         }
 
+        void write_parameters_to_file(int K, double R, double r) {
+            std::ofstream out;
+            out.open("setting.dat");
+            if (out.is_open())
+            {
+                out << "K: " << K << "\n" << "R: " << R << "\n" << "r: " << r << "\n";      
+            }
+            out.close();
+        }
+
         void printPoints() {
             std::cout << "Points in vector (" << points_arr.size() << " points):\n";
             for (auto point : points_arr) {
@@ -174,8 +184,9 @@ int main()
     // fig.printPoints();
 
     fig.write_data_to_file();
+    fig.write_parameters_to_file(K, R, r);
 
-    fig.run_visualization();
+    // fig.run_visualization();
 
     return 0;
 }
